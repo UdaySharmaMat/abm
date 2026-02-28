@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 
@@ -5,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const API_KEY = "AIzaSyDJ9M6aKaE2yjOSUDBwrgX6ofNpxN2JGLc";
+const API_KEY = process.env.GOOGLE_API_KEY;
 
 app.post("/simplify", async (req, res) => {
 
