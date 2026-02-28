@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ABM — Aasaan Bhaashaa Mein</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top left, #1e293b, #0f172a 60%);
+    color: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 60px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.65);
+}
+
+/* LOGO */
+.logo {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.logo::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(99,102,241,0.35), transparent 70%);
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: blur(40px);
+    z-index: -1;
+}
+
+.logo-main {
+    font-size: 54px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.logo-sub {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: #94a3b8;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+.tagline {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* CONTROLS */
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+label {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* FIXED SELECT STYLING */
+select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background-color: #1e293b;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Ensure dropdown options always visible */
+select option {
+    background-color: #1e293b;
+    color: #ffffff;
+}
+
+/* TEXTAREA */
+textarea {
+    width: 100%;
+    min-height: 240px;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: #f8fafc;
+    font-size: 15px;
+    resize: vertical;
+    outline: none;
+    margin-bottom: 30px;
+}
+
+textarea::placeholder {
+    color: #64748b;
+}
+
+/* BUTTON */
+button {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 14px;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 15px 40px rgba(99,102,241,0.4);
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 50px rgba(139,92,246,0.6);
+}
+
+/* OUTPUT */
+.output-box {
+    margin-top: 40px;
+    padding: 25px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    min-height: 140px;
+    white-space: pre-wrap;
+    color: #e2e8f0;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.footer-note {
+    text-align: center;
+    margin-top: 35px;
+    font-size: 12px;
+    color: #475569;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <div class="logo-main">ABM</div>
+        <div class="logo-sub">Aasaan Bhaashaa Mein</div>
+        <div class="tagline">Intelligent Academic Transformation Engine</div>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="mode">Mode</label>
+            <select id="mode">
+                <option value="academic">Academic</option>
+                <option value="upsc">UPSC</option>
+                <option value="administrative">Administrative</option>
+                <option value="policy">Policy Analysis</option>
+                <option value="plain">Plain Language</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="language">Language</label>
+            <select id="language">
+                <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+            </select>
+        </div>
+    </div>
+
+    <textarea id="inputText" placeholder="Paste textbook, policy, or academic content here..."></textarea>
+
+    <button onclick="simplifyText()">Transform</button>
+
+    <div class="output-box" id="output"></div>
+
+    <div class="footer-note">
+        Powered by ABM Engine • Structured Academic Simplification
+    </div>
+
+</div>
+
+<script>
+async function simplifyText() {
+
+    const input = document.getElementById("inputText").value;
+    const mode = document.getElementById("mode").value;
+    const language = document.getElementById("language").value;
+    const output = document.getElementById("output");
+
+    if (!input.trim()) {
+        output.innerText = "Please enter some text.";
+        return;
+    }
+
+    output.innerText = "Transforming...";
+
+    try {
+        const response = await fetch("http://localhost:3000/simplify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                text: input,
+                mode: mode,
+                language: language
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.result) {
+            output.innerText = data.result;
+        } else {
+            output.innerText = "Server Error: " + JSON.stringify(data);
+        }
+
+    } catch (error) {
+        output.innerText = "Error: " + error.message;
+    }
+}
+</script>
+
+</body>
+</html>
