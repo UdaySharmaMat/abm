@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 
 // API key
 const API_KEY = process.env.GOOGLE_API_KEY;
+console.log("API KEY PRESENT:", API_KEY ? "YES" : "NO");
 
 // API route
 app.post("/simplify", async (req, res) => {
