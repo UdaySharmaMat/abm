@@ -1,3 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ABM — Aasaan Bhaashaa Mein</title>
+
+<style>
+body{
+font-family:Arial, sans-serif;
+background:#111827;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+width:800px;
+}
+
+textarea{
+width:100%;
+height:200px;
+margin-bottom:10px;
+padding:10px;
+}
+
+button{
+padding:10px 20px;
+cursor:pointer;
+}
+
+.output{
+margin-top:20px;
+background:#1f2937;
+padding:15px;
+white-space:pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>ABM — Aasaan Bhaashaa Mein</h1>
+
+<textarea id="inputText" placeholder="Paste text here..."></textarea>
+
+<br>
+
+<select id="mode">
+<option value="academic">Academic</option>
+<option value="upsc">UPSC</option>
+<option value="administrative">Administrative</option>
+<option value="policy">Policy</option>
+<option value="plain">Plain Language</option>
+</select>
+
+<select id="language">
+<option value="english">English</option>
+<option value="hindi">Hindi</option>
+</select>
+
+<br><br>
+
+<button onclick="simplifyText()">Transform</button>
+
+<div class="output" id="output"></div>
+
+</div>
+
 <script>
 
 async function simplifyText(){
@@ -6,7 +80,6 @@ const input=document.getElementById("inputText").value;
 const mode=document.getElementById("mode").value;
 const language=document.getElementById("language").value;
 const output=document.getElementById("output");
-const button=document.querySelector("button");
 
 if(!input.trim()){
 output.innerText="Please enter some text.";
@@ -14,12 +87,8 @@ return;
 }
 
 output.innerText="Transforming...";
-button.disabled=true;
 
 try{
-
-const controller=new AbortController();
-const timeout=setTimeout(()=>controller.abort(),60000);
 
 const response=await fetch("/simplify",{
 method:"POST",
@@ -30,40 +99,24 @@ body:JSON.stringify({
 text:input,
 mode:mode,
 language:language
-}),
-signal:controller.signal
+})
 });
-
-clearTimeout(timeout);
-
-if(!response.ok){
-throw new Error("Server error: "+response.status);
-}
 
 const data=await response.json();
 
 if(data.result){
 output.innerText=data.result;
-}
-else if(data.error){
-output.innerText="Error: "+data.error;
-}
-else{
-output.innerText="Unexpected server response.";
+}else{
+output.innerText="Server error";
 }
 
 }catch(error){
-
-if(error.name==="AbortError"){
-output.innerText="Server took too long to respond. Please try again.";
-}else{
 output.innerText="Error: "+error.message;
 }
 
 }
 
-button.disabled=false;
-
-}
-
 </script>
+
+</body>
+</html>
