@@ -5,15 +5,17 @@ const cors = require("cors");
 
 const app = express();
 
+// Serve frontend
 app.use(express.static("public"));
 
+// Allow cross-origin requests
 app.use(cors());
 app.use(express.json());
 
+// Load API key from environment
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 app.post("/simplify", async (req, res) => {
-
   const input = req.body.text || "";
   const mode = req.body.mode || "academic";
   const language = req.body.language || "english";
@@ -41,9 +43,7 @@ Rules:
 Text:
 ${input}
 `;
-  }
-
-  else if (mode === "upsc") {
+  } else if (mode === "upsc") {
     corePrompt = `
 You are a UPSC Mains examination mentor.
 
@@ -64,9 +64,7 @@ Tone:
 Text:
 ${input}
 `;
-  }
-
-  else if (mode === "administrative") {
+  } else if (mode === "administrative") {
     corePrompt = `
 You are drafting an internal government file note.
 
@@ -82,9 +80,7 @@ Rules:
 Text:
 ${input}
 `;
-  }
-
-  else if (mode === "policy") {
+  } else if (mode === "policy") {
     corePrompt = `
 You are a public policy analyst.
 
@@ -106,9 +102,7 @@ Tone:
 Text:
 ${input}
 `;
-  }
-
-  else if (mode === "plain") {
+  } else if (mode === "plain") {
     corePrompt = `
 Rewrite the following text in very simple language.
 
@@ -125,7 +119,7 @@ ${input}
   }
 
   // =========================
-  // LANGUAGE ENFORCEMENT (STRONG)
+  // LANGUAGE ENFORCEMENT
   // =========================
 
   let finalPrompt = "";
@@ -161,9 +155,7 @@ ${corePrompt}
         body: JSON.stringify({
           contents: [
             {
-              parts: [
-                { text: finalPrompt }
-              ]
+              parts: [{ text: finalPrompt }]
             }
           ]
         })
@@ -173,18 +165,19 @@ ${corePrompt}
     const data = await response.json();
 
     if (data.candidates && data.candidates.length > 0) {
-      res.json({
-        result: data.candidates[0].content.parts[0].text
-      });
+      res.json({ result: data.candidates[0].content.parts[0].text });
     } else {
       res.json({ error: data });
     }
-
   } catch (error) {
     res.json({ error: error.message });
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+// =========================
+// USE RENDER'S PORT OR LOCAL
+// =========================
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
