@@ -54,13 +54,12 @@ app.post("/simplify", async (req, res) => {
 
     const data = await response.json();
 
-    if (data.candidates) {
-      res.json({
-        result: data.candidates[0].content.parts[0].text
-      });
-    } else {
-      res.json({ error: data });
-    }
+   if (data.candidates && data.candidates.length > 0) {
+  res.json({ result: data.candidates[0].content.parts[0].text });
+} else {
+  console.log("Gemini response:", data);
+  res.json({ error: "Gemini API returned unexpected response", data });
+}
 
   } catch (err) {
     res.json({ error: err.message });
